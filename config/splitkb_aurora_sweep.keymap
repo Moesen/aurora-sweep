@@ -4,23 +4,70 @@
 
 &mt {
   flavor = "tap-preferred";
-  tapping-term-ms = <100>;
+  tapping-term-ms = <130>;
 };
 &lt {
-  tapping-term-ms = <100>;
+  tapping-term-ms = <130>;
 };
 / {
+    macros {
+      vim_write: vim_write {
+        combatible = "zmk,behavior-macro";
+        #binding-cells = <0>;
+        wait-ms = <30>;
+        bindings
+          = <&macro_tap &kp COLON>
+          , <&macro_tap &kp W>
+          , <&macro_tap &kp RET>
+          ;
+      };
+      vim_write_quit: vim_write_quit {
+        compatible = "zmk,behavior-macro";
+        #binding-cells = <0>;
+        wait-ms = <30>;
+        bindings
+          = <&macro_tap &kp COLON>
+          , <&macro_tap &kp W>
+          , <&macro_tap &kp Q>
+          , <&macro_tap &kp RET>
+          ;
+      };
+      shift_tab: shift_tab {
+        compatible = "zmk,behavior-macro";
+        #binding-cells = <0>;
+        bindings
+          = <&macro_press &kp LSHFT>
+          , <&macro_tap &kp TAB>
+          , <&macro_release &kp LSHFT>
+          ;
+      };
+    };
     combos {
         compatible = "zmk,combos";
-        combo_esc {
-            timeout-ms = <50>;
-            key-positions = <0 1>;
-            bindings = <&kp TAB>;
-        };
-         combo_tab {
+         combo_esc {
             timeout-ms = <50>;
             key-positions = <10 11>;
             bindings = <&kp ESC>;
+        };
+        combo_tab {
+            timeout-ms = <50>;
+            key-positions = <12 13>;
+            bindings = <&kp TAB>;
+        };
+        combo_shift_tab {
+            timeout-ms = <50>;
+            key-positions = <16 17>;
+            bindings = <&shift_tab>;
+        };
+        combo_write {
+            timeout-ms = <50>;
+            key-positions = <1 19>;
+            bindings = <&vim_write>;
+        };
+        combo_write_quit {
+            timeout-ms = <50>;
+            key-positions = <0 1 19>;
+            bindings = <&vim_write_quit>;
         };
   };
         conditional_layers {
@@ -44,24 +91,24 @@
         right_layer {
           bindings = <
             &kp N1    &kp N2 &kp N3   &kp N4    &kp N5       &kp N6      &kp N7   &kp N8   &kp N9    &kp N0
-            &kp EXCL  &kp AT &kp HASH &kp DLLR  &kp PRCNT    &kp CARET   &kp AMPS &kp STAR &kp EQUAL &kp MINUS
-            &kp GRAVE &none  &none    &none     &kp MINUS    &kp UNDER   &none    &none    &none     &kp BSLH
+            &mt LSHIFT EXCL  &kp AT &kp HASH &kp DLLR  &kp PRCNT    &kp CARET   &kp AMPS &kp STAR &kp EQUAL &mt LSHIFT SQT;
+            &kp GRAVE &none  &none    &kp MINUS     &none    &none   &kp UNDER    &none    &none     &kp BSLH
                                       &kp LMETA &lt 2 RET    &lt 1 SPACE &kp LALT
             >;
         };
         left_layer {
           bindings = <
-            &kp F1    &kp F2 &kp F3  &kp F4  &kp F5          &kp F8         &kp F9          &kp F10         &kp F11    &kp F12
-            &kp ESC   &none  &none   &none   &none           &kp LEFT    &kp DOWN     &kp UP       &kp RIGHT  &kp BSPC
-            &kp TAB   &none  &none   &none   &none           &kp K_PREV  &kp K_VOL_DN &kp K_VOL_UP &kp K_NEXT &kp K_PLAY_PAUSE
-                                   &kp LMETA &lt 2 RET       &lt 1 SPACE &kp LALT
+            &trans    &kp F1  &kp F2  &kp F3  &kp F4               &trans  &trans  &trans  &trans        &kp BSPC
+            &trans    &kp F5  &kp F6   &kp F7   &kp F8              &kp LEFT    &kp DOWN     &kp UP       &kp RIGHT  &kp DEL
+            &none     &kp F9  &kp F10   &kp F11   &kp F12             &kp K_PREV  &kp K_VOL_DN &kp K_VOL_UP &kp K_NEXT &kp K_PLAY_PAUSE
+                                   &kp LMETA &lt 2 RET              &lt 1 SPACE &kp LALT
           >;
         };
         combo_layer {
           bindings = <
-            &trans  &trans &trans &trans &trans          &trans      &kp LBKT   &kp RBKT   &trans &kp DEL
-            &kp ESC &trans &trans &trans &trans          &trans      &kp LPAR   &kp RPAR   &trans &trans
-            &kp TAB &trans &trans &trans &trans          &trans      &kp LBRC   &kp RBRC   &trans &trans
+            &trans  &trans &trans &trans &trans          &trans      &kp LBKT   &kp RBKT   &trans &trans
+            &trans  &trans &trans &trans &trans          &trans      &kp LPAR   &kp RPAR   &trans &trans
+            &trans  &trans &trans &trans &trans          &trans      &kp LBRC   &kp RBRC   &trans &trans
                                 &kp LALT &lt 2 RET       &lt 1 SPACE &kp LMETA
           >;
         };
